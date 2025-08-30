@@ -108,6 +108,28 @@ def train_and_evaluate_model(model_name, model_config, training_data, training_l
 
     return model, test_accuracy, test_loss, training_duration, training_history
 
+
+def save_experiment_to_database(model_name, model_config, final_accuracy, final_loss, training_time):
+    database_connection = sqlite3.connect('experiments/cifar10_experiments.db')
+    database_cursor = database_connection.cursor()
+
+    hyperparameters_json = json.dumps(model_config)
+    current_timestamp = datetime.datetime.now().isoformat()
+    model_save_path = f"models/{model_name}_{current_timestamp.replace(':', '-')}.h5"
+
+    database_cursor.execute('''
+        INSERT INTO experiments
+        (timestamp, model_name, hyperparameters, final_accuracy, final_loss, training_time, model_path)
+        VALUES (?, ?, ?, ?, ?, ?, ?) 
+    ''', (current_timestamp, model_name, hyperparameters_json, final_accuracy, final_loss, training_time, model_save_path))
+
+    database_connection.commit()
+    database_connection.close()
+
+    print(f"Experimnts {model_name} saved to DB")
+    return model_save_path
+
+
 if __name__ == "__main__":
     print("Creating database...")
     create_database()
