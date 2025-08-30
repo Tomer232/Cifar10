@@ -9,8 +9,6 @@ import datetime
 from PIL import Image
 import json
 
-from tensorflow.python.keras.saving.saved_model.load import training_lib
-
 MODEL_CONFIGS = {
     'model_a': {
         'dense_units': 128,
@@ -63,6 +61,27 @@ def load_and_preprocess_cifar10():
     print(f"Test images shape: {test_images.shape}")
 
     return (training_images, training_labels), (test_images, test_labels), class_names
+
+
+def create_cnn_model(model_config):
+    model = keras.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+        layers.MaxPooling2D((2, 2)),
+
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+
+        layers.Conv2D(64, (3, 3), activation='relu'),
+
+        layers.Flatten(),
+        layers.Dense(model_config['dense_units'], activation='relu'),
+        layers.Dropout(model_config['dropout_rate']),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=model_config['learning_rate']), loss='categorical_crossentropy', metrics=['accuracy'])
+
+    return model
 
 
 if __name__ == "__main__":
