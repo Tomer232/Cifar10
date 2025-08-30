@@ -131,6 +131,24 @@ def save_experiment_to_database(model_name, model_config, final_accuracy, final_
     return model_save_path
 
 
+def view_experiment_results():
+    database_connection = sqlite3.connect('experiments/cifar10_experiments.db')
+    database_cursor = database_connection.cursor()
+
+    database_cursor.execute('SELECT * FROM experiments ORDER BY final_accuracy DESC')
+    results = database_cursor.fetchall()
+
+    print(f"=== EXPERIMENT RESULTS (Best to worst) ===")
+    for row in results:
+        experiments_id, timestamp, model_name, hyperparams, accuracy, loss, duration, model_path = row
+        print(f"Model: {model_name} | Accuracy: {accuracy:.4f} | Loss: {loss:.4f} | Duration: {duration:.1f}")
+        hyperparams_dict = json.load(hyperparams)
+        print(f" Config: {hyperparams_dict}")
+        print("-" * 60)
+
+    database_connection.close()
+
+
 if __name__ == "__main__":
     print("Creating database...")
     create_database()
