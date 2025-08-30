@@ -142,7 +142,7 @@ def view_experiment_results():
     for row in results:
         experiments_id, timestamp, model_name, hyperparams, accuracy, loss, duration, model_path = row
         print(f"Model: {model_name} | Accuracy: {accuracy:.4f} | Loss: {loss:.4f} | Duration: {duration:.1f}")
-        hyperparams_dict = json.load(hyperparams)
+        hyperparams_dict = json.loads(hyperparams)
         print(f" Config: {hyperparams_dict}")
         print("-" * 60)
 
@@ -164,5 +164,7 @@ if __name__ == "__main__":
             model_name, MODEL_CONFIGS[model_name], training_data, training_labels, test_data, test_labels
         )
 
-    model_path = save_experiment_to_database(model_name, MODEL_CONFIGS[model_name], accuracy, loss, duration)
-    print(f"{model_name.upper()} completed in {duration:.2f} seconds with {accuracy:.4f} accuracy")
+        model_path = save_experiment_to_database(model_name, MODEL_CONFIGS[model_name], accuracy, loss, duration)
+        print(f"{model_name.upper()} completed in {duration:.2f} seconds with {accuracy:.4f} accuracy")
+
+view_experiment_results()
