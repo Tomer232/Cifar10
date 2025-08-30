@@ -1,4 +1,5 @@
 import tensorflow as tf
+from keras.src.metrics.accuracy_metrics import accuracy
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
@@ -100,11 +101,11 @@ def train_and_evaluate_model(model_name, model_config, training_data, training_l
     )
 
     end_time = datetime.datetime.now()
-    training_duration = (start_time - end_time). total_seconds()
+    training_duration = abs((start_time - end_time). total_seconds())
 
     test_loss, test_accuracy = model.evaluate(test_data, test_labels, verbose=0)
 
-    print(f"{model_name} - FInal accuracy: {test_accuracy:.4f}")
+    print(f"{model_name} - Final accuracy: {test_accuracy:.4f}")
 
     return model, test_accuracy, test_loss, training_duration, training_history
 
@@ -126,7 +127,7 @@ def save_experiment_to_database(model_name, model_config, final_accuracy, final_
     database_connection.commit()
     database_connection.close()
 
-    print(f"Experimnts {model_name} saved to DB")
+    print(f"Experiments {model_name} saved to DB")
     return model_save_path
 
 
@@ -136,15 +137,14 @@ if __name__ == "__main__":
     print("Database created successfully")
 
     print("\nLoading CIFAR-10 data...")
-    (train_data, train_labels), (test_data, test_labels), class_names = load_and_preprocess_cifar10()
+    (training_data, training_labels), (test_data, test_labels), class_names = load_and_preprocess_cifar10()
     print("Data loaded successfully")
 
-    print(f"\nAvailable model configurations : {list(MODEL_CONFIGS.keys())}")
-    print(f"Class names: {class_names}")
+    for model_name in ['model_a', 'model_b']:
+        print(f"\n=== training {model_name.upper()} ===")
+        model, accuracy, loss, duration, history = train_and_evaluate_model(
+            model_name, MODEL_CONFIGS[model_name], training_data, training_labels, test_data, test_labels
+        )
 
-    print("\nTesting model creation...")
-    test_model = create_cnn_model(MODEL_CONFIGS['model_a'])
-    print("Model A created successfully")
-    print(f"Model A summery:")
-    test_model.summary()
-
+    model_path = save_experiment_to_database(model_name, MODEL_CONFIGS[model_name], accuracy, loss, duration)
+    print(f"{model_name.upper()} completed in {duration:.2f} seconds with {accuracy:.4f} accuracy")
