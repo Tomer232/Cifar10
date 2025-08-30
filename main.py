@@ -84,6 +84,30 @@ def create_cnn_model(model_config):
     return model
 
 
+def train_and_evaluate_model(model_name, model_config, training_data, training_labels, test_data, test_labels):
+    print(f"\n--- Training {model_name} ---")
+    model = create_cnn_model(model_config)
+
+    start_time = datetime.datetime.now()
+
+    training_history = model.fit(
+        training_data,
+        training_labels,
+        batch_size=model_config['batch_size'],
+        epochs=5,
+        validation_data=(test_data, test_labels),
+        verbose=1
+    )
+
+    end_time = datetime.datetime.now()
+    training_duration = (start_time - end_time). total_seconds()
+
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels, verbose=0)
+
+    print(f"{model_name} - FInal accuracy: {test_accuracy:.4f}")
+
+    return model, test_accuracy, test_loss, training_duration, training_history
+
 if __name__ == "__main__":
     print("Creating database...")
     create_database()
@@ -95,3 +119,10 @@ if __name__ == "__main__":
 
     print(f"\nAvailable model configurations : {list(MODEL_CONFIGS.keys())}")
     print(f"Class names: {class_names}")
+
+    print("\nTesting model creation...")
+    test_model = create_cnn_model(MODEL_CONFIGS['model_a'])
+    print("Model A created successfully")
+    print(f"Model A summery:")
+    test_model.summary()
+
