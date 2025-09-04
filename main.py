@@ -257,6 +257,65 @@ def predict_user_image(model, class_names):
             print("-" * 35)
 
 
+def compare_model_on_user_images(model_a, model_b, class_names):
+    user_images_folder = 'user_images'
+
+    if not os.path.exists(user_images_folder):
+        print(f"no {user_images_folder} folder found")
+        return
+
+    image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
+    image_files = []
+
+    for filename in os.listdir(user_images_folder):
+        if any(filename.lower().endswith(ext) for ext in image_extensions):
+            image_files.append(filename)
+
+    if not image_files:
+        print(f"No images found in {user_images_folder} folder.")
+        return
+
+    print(f"\n=== Model comparison om {len(image_files)} user images ===")
+
+    model_a_wins = 0
+    model_b_wins = 0
+    ties = 0
+
+    for image_file in image_files:
+        image_path = os.path.join(user_images_folder, image_file)
+        processed_image = preprocess_user_image(image_path)
+
+        if processed_image is not None:
+            # Get predictions from both models
+            pred_a = model_a.predict(processed_image, verbose=0)
+            pred_b = model_b.predict(processed_image, verbose=0)
+
+            class_a = np.argmax(pred_a[0])
+            class_b = np.argmax(pred_b[0])
+            confidence_a = pred_a[0][class_a]
+            confidence_b = pred_b[0][class_b]
+
+            print(f"\nImage: {image_file}")
+            print(f"  Model A (Basic): {class_names[class_a]} (confidence: {confidence_a:.2f})")
+            print(f"  Model B (Enhanced): {class_names[class_b]} (confidence: {confidence_b:.2f})")
+
+            if confidence_a > confidence_b:
+                print(f"Model A win")
+                model_a_wins += 1
+            elif confidence_b > confidence_a:
+                print(f"Model B win")
+                model_b_wins += 1
+            else:
+                print(f"Tie")
+                ties += 1
+
+    print(f"\n=== Final comparison results ===")
+    print(f"Model A (Basic) wins: {model_a_wins}")
+    print(f"Model B (Enhanced) wins: {model_b_wins}")
+    print(f"Ties: {ties}")
+    print(f"Model B win rate: {(model_b_wins / len(image_files)) * 100:.1f}%")
+
+
 if __name__ == "__main__":
     print("Creating database...")
     create_database()
@@ -283,14 +342,8 @@ if __name__ == "__main__":
         best_model = model_a
 
     print(f"\n=== Training model B (basic) ===")
-    model_b, accuracy_b, loss_b, duration_b, history_ = train_and_evaluate_model('model_b', MODEL_CONFIGS['model_b'],
-                                                                                 training_data, training_labels,
-                                                                                 test_data, test_labels)
+    model_b, accuracy_b, loss_b, duration_b, history_ = train_and_evaluate_model('model_b', MODEL_CONFIGS['model_b'], training_data, training_labels, test_data, test_labels)
     model_path_b = save_experiment_to_database('model_b', MODEL_CONFIGS['model_b'], accuracy_b, loss_b, duration_b)
-
-    if not os.path.exists('models'):
-        os.makedirs('models')
-    model_b.save(model_path_b)
     print(f"model b completed in {duration_b:.2f} seconds with {accuracy_b:.4f} accuracy")
 
     if accuracy_b > best_accuracy:
@@ -304,7 +357,6 @@ if __name__ == "__main__":
 
     view_experiment_results()
 
-    print(f"\n=== TESTING CUSTOM IMAGE PREDICTIONS ===")
-    print(f"Using best model with {best_accuracy:.4f} accuracy")
-    predict_user_image(best_model, class_names)
+    print(f"\n=== Comparing both models on user images ===")
+    compare_model_on_user_images(model_a, model_b, class_names)
 
