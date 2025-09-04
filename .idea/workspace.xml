@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="added function to predict the user image">
+    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="updating the main section to be up to date with recent functions additions">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +140,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1756997752462</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL‎-00010" summary="updating the main section to be up to date with recent functions additions">
+      <option name="closed" value="true" />
+      <created>1756997992002</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL‎-00010" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1756997992002</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -152,6 +161,7 @@
     <MESSAGE value="bug fixes" />
     <MESSAGE value="added preprocessing of user given image" />
     <MESSAGE value="added function to predict the user image" />
-    <option name="LAST_COMMIT_MESSAGE" value="added function to predict the user image" />
+    <MESSAGE value="updating the main section to be up to date with recent functions additions" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating the main section to be up to date with recent functions additions" />
   </component>
 </project>

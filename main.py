@@ -14,13 +14,15 @@ MODEL_CONFIGS = {
         'dense_units': 128,
         'dropout_rate': 0.2,
         'learning_rate': 0.001,
-        'batch_size': 32
+        'batch_size': 32,
+        'epochs': 5
     },
     'model_b': {
         'dense_units': 256,
-        'dropout_rate': 0.5,
-        'learning_rate': 0.0005,
-        'batch_size': 64
+        'dropout_rate': 0.3,
+        'learning_rate': 0.001,
+        'batch_size': 32,
+        'epochs': 20
     }
 }
 
