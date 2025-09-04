@@ -169,6 +169,49 @@ def preprocess_user_image(image_path):
         return None
 
 
+def predict_user_image(model, class_names):
+    user_images_folder = 'user_images'
+
+    if not os.path.exists(user_images_folder):
+        print(f"Creating {user_images_folder} folder...")
+        os.makedirs(user_images_folder)
+        print(f"Please add your images to the {user_images_folder} folder and run again")
+        return
+
+    image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
+    image_files = []
+
+    for filename in os.listdir(user_images_folder):
+        if any(filename.lower().endswith(ext) for ext in image_extensions):
+            image_files.append(filename)
+
+    if not image_files:
+        print(f"No images found in {user_images_folder} folder")
+        print(f"supported formats: {image_extensions}")
+        return
+
+    print(f"\n=== Predicting {len(image_files)} user images ===")
+
+    for image_file in image_files:
+        image_path = os.path.join(user_images_folder, image_file)
+        processed_image = preprocess_user_image(image_path)
+
+        if processed_image is not None:
+            predictions = model.predict(processed_image, verbose=0)
+            predicted_class_index = np.argmax(predictions[0])
+            confidence = predictions[0][predicted_class_index]
+            predicted_class = class_names[predicted_class_index]
+
+            print(f"image: {image_file}")
+            print(f"Prediction: {predicted_class} (confidence: {confidence:.2f})")
+            print(f" Top 3 predictions: ")
+
+            top_3_indices = np.argsort(predictions[0])[-3:][::-1]
+            for i, idx in enumerate(top_3_indices):
+                print(f"     {i+1}. {class_names[idx]}: {predictions[0][idx]:.2f}")
+            print("-" * 35)
+
+
 if __name__ == "__main__":
     print("Creating database...")
     create_database()
