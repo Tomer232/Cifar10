@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="updated main">
+    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="updated function and main">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,7 +188,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1757001582369</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL‎-00016" summary="updated function and main">
+      <option name="closed" value="true" />
+      <created>1757002067696</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL‎-00016" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1757002067696</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -206,6 +215,7 @@
     <MESSAGE value="updated CNN creation function with batch normalization" />
     <MESSAGE value="added new function to handle enhanced model training" />
     <MESSAGE value="updated main" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated main" />
+    <MESSAGE value="updated function and main" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated function and main" />
   </component>
 </project>

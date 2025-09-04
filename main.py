@@ -1,5 +1,3 @@
-from turtledemo.penrose import start
-
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -91,7 +89,7 @@ def create_cnn_model(model_config):
     return model
 
 
-def train_enhanced_model(model_name, model_config, training_data, training_labes, test_data, test_labels):
+def train_enhanced_model(model_name, model_config, training_data, training_labels, test_data, test_labels):
     print(f"\n --- training {model_name} (enhanced) ---")
     model = create_cnn_model(model_config)
 
@@ -114,7 +112,7 @@ def train_enhanced_model(model_name, model_config, training_data, training_labes
     ]
 
     training_history = model.fit(
-        training_data, training_labes, batch_size=model_config['batch_size'],
+        training_data, training_labels, batch_size=model_config['batch_size'],
         epochs=model_config['epochs'],
         validation_data=(test_data, test_labels),
         callbacks=callbacks,
@@ -257,7 +255,7 @@ def predict_user_image(model, class_names):
             print("-" * 35)
 
 
-def compare_model_on_user_images(model_a, model_b, class_names):
+def compare_models_on_user_images(model_a, model_b, class_names):
     user_images_folder = 'user_images'
 
     if not os.path.exists(user_images_folder):
@@ -275,11 +273,7 @@ def compare_model_on_user_images(model_a, model_b, class_names):
         print(f"No images found in {user_images_folder} folder.")
         return
 
-    print(f"\n=== Model comparison om {len(image_files)} user images ===")
-
-    model_a_wins = 0
-    model_b_wins = 0
-    ties = 0
+    print(f"\n=== Model comparison on {len(image_files)} user images ===")
 
     for image_file in image_files:
         image_path = os.path.join(user_images_folder, image_file)
@@ -299,22 +293,6 @@ def compare_model_on_user_images(model_a, model_b, class_names):
             print(f"  Model A (Basic): {class_names[class_a]} (confidence: {confidence_a:.2f})")
             print(f"  Model B (Enhanced): {class_names[class_b]} (confidence: {confidence_b:.2f})")
 
-            if confidence_a > confidence_b:
-                print(f"Model A win")
-                model_a_wins += 1
-            elif confidence_b > confidence_a:
-                print(f"Model B win")
-                model_b_wins += 1
-            else:
-                print(f"Tie")
-                ties += 1
-
-    print(f"\n=== Final comparison results ===")
-    print(f"Model A (Basic) wins: {model_a_wins}")
-    print(f"Model B (Enhanced) wins: {model_b_wins}")
-    print(f"Ties: {ties}")
-    print(f"Model B win rate: {(model_b_wins / len(image_files)) * 100:.1f}%")
-
 
 if __name__ == "__main__":
     print("Creating database...")
@@ -329,7 +307,7 @@ if __name__ == "__main__":
     best_accuracy = 0
 
     print(f"\n=== Training model A (basic) ===")
-    model_a, accuracy_a, loss_a, duration_a, history_ = train_and_evaluate_model('model_a', MODEL_CONFIGS['model_a'], training_data, training_labels, test_data, test_labels)
+    model_a, accuracy_a, loss_a, duration_a, _ = train_and_evaluate_model('model_a', MODEL_CONFIGS['model_a'], training_data, training_labels, test_data, test_labels)
     model_path_a = save_experiment_to_database('model_a', MODEL_CONFIGS['model_a'], accuracy_a, loss_a, duration_a)
 
     if not os.path.exists('models'):
@@ -342,7 +320,7 @@ if __name__ == "__main__":
         best_model = model_a
 
     print(f"\n=== Training model B (basic) ===")
-    model_b, accuracy_b, loss_b, duration_b, history_ = train_and_evaluate_model('model_b', MODEL_CONFIGS['model_b'], training_data, training_labels, test_data, test_labels)
+    model_b, accuracy_b, loss_b, duration_b, _ = train_enhanced_model('model_b', MODEL_CONFIGS['model_b'], training_data, training_labels, test_data, test_labels)
     model_path_b = save_experiment_to_database('model_b', MODEL_CONFIGS['model_b'], accuracy_b, loss_b, duration_b)
     print(f"model b completed in {duration_b:.2f} seconds with {accuracy_b:.4f} accuracy")
 
@@ -358,5 +336,5 @@ if __name__ == "__main__":
     view_experiment_results()
 
     print(f"\n=== Comparing both models on user images ===")
-    compare_model_on_user_images(model_a, model_b, class_names)
+    compare_models_on_user_images(model_a, model_b, class_names)
 
