@@ -1,5 +1,4 @@
 import tensorflow as tf
-from keras.src.metrics.accuracy_metrics import accuracy
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
@@ -147,6 +146,27 @@ def view_experiment_results():
         print("-" * 60)
 
     database_connection.close()
+
+
+def preprocess_user_image(image_path):
+    try:
+        user_images = Image.open(image_path)
+
+        if user_images.mode != 'RGB':
+            user_images = user_images.convert('RGB')
+
+        user_images = user_images.resize((32, 32))
+
+        image_array = np.array(user_images)
+        image_array = image_array.astype('float32') / 255.0
+
+        image_array = np.expand_dims(image_array, axis=0)
+
+        return image_array
+
+    except Exception as error:
+        print(f"Error processing image {image_path}: {error}")
+        return None
 
 
 if __name__ == "__main__":
