@@ -1,3 +1,5 @@
+from turtledemo.penrose import start
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -88,6 +90,44 @@ def create_cnn_model(model_config):
 
     return model
 
+
+def train_enhanced_model(model_name, model_config, training_data, training_labes, test_data, test_labels):
+    print(f"\n --- training {model_name} (enhanced) ---")
+    model = create_cnn_model(model_config)
+
+    start_time = datetime.datetime.now()
+
+    callbacks = [
+        keras.callbacks.ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=3,
+            min_lr=0.0001,
+            verbose=1
+        ),
+        keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True,
+            verbose=1
+        )
+    ]
+
+    training_history = model.fit(
+        training_data, training_labes, batch_size=model_config['batch_size'],
+        epochs=model_config['epochs'],
+        validation_data=(test_data, test_labels),
+        callbacks=callbacks,
+        verbose=1
+    )
+
+    end_time = datetime.datetime.now()
+    training_duration = abs((start_time - end_time).total_seconds())
+
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels, verbose=0)
+    print(f"{model_name} - final accuracy: {test_accuracy:.4f}")
+
+    return model, test_accuracy, test_loss, training_duration, training_history
 
 def train_and_evaluate_model(model_name, model_config, training_data, training_labels, test_data, test_labels):
     print(f"\n--- Training {model_name} ---")
