@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="updated CNN creation function with batch normalization">
+    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="added new function to handle enhanced model training">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -172,7 +172,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1756999901281</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL‎-00014" summary="added new function to handle enhanced model training">
+      <option name="closed" value="true" />
+      <created>1757000397594</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL‎-00014" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1757000397594</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -189,6 +197,7 @@
     <MESSAGE value="updating the code to do a comparison between model a - basic and model b - enhanced" />
     <MESSAGE value="update epoches variable in cnn creation" />
     <MESSAGE value="updated CNN creation function with batch normalization" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated CNN creation function with batch normalization" />
+    <MESSAGE value="added new function to handle enhanced model training" />
+    <option name="LAST_COMMIT_MESSAGE" value="added new function to handle enhanced model training" />
   </component>
 </project>

@@ -269,26 +269,42 @@ if __name__ == "__main__":
     best_model = None
     best_accuracy = 0
 
-    for model_name in ['model_a', 'model_b']:
-        print(f"\n=== training {model_name.upper()} ===")
-        model, accuracy, loss, duration, history = train_and_evaluate_model(
-            model_name, MODEL_CONFIGS[model_name], training_data, training_labels, test_data, test_labels
-        )
+    print(f"\n=== Training model A (basic) ===")
+    model_a, accuracy_a, loss_a, duration_a, history_ = train_and_evaluate_model('model_a', MODEL_CONFIGS['model_a'], training_data, training_labels, test_data, test_labels)
+    model_path_a = save_experiment_to_database('model_a', MODEL_CONFIGS['model_a'], accuracy_a, loss_a, duration_a)
 
-        model_path = save_experiment_to_database(model_name, MODEL_CONFIGS[model_name], accuracy, loss, duration)
-        print(f"{model_name.upper()} completed in {duration:.2f} seconds with {accuracy:.4f} accuracy")
+    if not os.path.exists('models'):
+        os.makedirs('models')
+    model_a.save(model_path_a)
+    print(f"model a completed in {duration_a:.2f} seconds with {accuracy_a:.4f} accuracy")
 
-        if not os.path.exists('models'):
-            os.makedirs('models')
-        model.save(model_path)
-        print(f"Model saved to {model_path}")
+    if accuracy_a > best_accuracy:
+        best_accuracy = accuracy_a
+        best_model = model_a
 
-        if accuracy > best_accuracy:
-            best_accuracy = accuracy
-            best_model = model
+    print(f"\n=== Training model B (basic) ===")
+    model_b, accuracy_b, loss_b, duration_b, history_ = train_and_evaluate_model('model_b', MODEL_CONFIGS['model_b'],
+                                                                                 training_data, training_labels,
+                                                                                 test_data, test_labels)
+    model_path_b = save_experiment_to_database('model_b', MODEL_CONFIGS['model_b'], accuracy_b, loss_b, duration_b)
 
-view_experiment_results()
+    if not os.path.exists('models'):
+        os.makedirs('models')
+    model_b.save(model_path_b)
+    print(f"model b completed in {duration_b:.2f} seconds with {accuracy_b:.4f} accuracy")
 
-print(f"\n=== TESTING CUSTOM IMAGE PREDICTIONS ===")
-print(f"Using best model with {best_accuracy:.4f} accuracy")
-predict_user_image(best_model, class_names)
+    if accuracy_b > best_accuracy:
+        best_accuracy = accuracy_b
+        best_model = model_b
+
+    print(f"\n=== MODEL COMPARISON ===")
+    print(f"Model A (Basic): {accuracy_a:.4f} accuracy in {duration_a:.1f}s")
+    print(f"Model B (Enhanced): {accuracy_b:.4f} accuracy in {duration_b:.1f}s")
+    print(f"Improvement: +{((accuracy_b - accuracy_a) * 100):.2f}% accuracy")
+
+    view_experiment_results()
+
+    print(f"\n=== TESTING CUSTOM IMAGE PREDICTIONS ===")
+    print(f"Using best model with {best_accuracy:.4f} accuracy")
+    predict_user_image(best_model, class_names)
+
