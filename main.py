@@ -221,6 +221,9 @@ if __name__ == "__main__":
     (training_data, training_labels), (test_data, test_labels), class_names = load_and_preprocess_cifar10()
     print("Data loaded successfully")
 
+    best_model = None
+    best_accuracy = 0
+
     for model_name in ['model_a', 'model_b']:
         print(f"\n=== training {model_name.upper()} ===")
         model, accuracy, loss, duration, history = train_and_evaluate_model(
@@ -230,4 +233,17 @@ if __name__ == "__main__":
         model_path = save_experiment_to_database(model_name, MODEL_CONFIGS[model_name], accuracy, loss, duration)
         print(f"{model_name.upper()} completed in {duration:.2f} seconds with {accuracy:.4f} accuracy")
 
+        if not os.path.exists('models'):
+            os.makedirs('models')
+        model.save(model_path)
+        print(f"Model saved to {model_path}")
+
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_model = model
+
 view_experiment_results()
+
+print(f"\n=== TESTING CUSTOM IMAGE PREDICTIONS ===")
+print(f"Using best model with {best_accuracy:.4f} accuracy")
+predict_user_image(best_model, class_names)
