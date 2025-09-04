@@ -96,7 +96,7 @@ def train_and_evaluate_model(model_name, model_config, training_data, training_l
         training_data,
         training_labels,
         batch_size=model_config['batch_size'],
-        epochs=5,
+        epochs=model_config['epochs'],
         validation_data=(test_data, test_labels),
         verbose=1
     )
