@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="updating the code to do a comparison between model a - basic and model b - enhanced">
+    <list default="true" id="7badfad0-8556-4eed-91ce-f1ec35440bd8" name="Changes" comment="update epoches variable in cnn creation">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -155,7 +155,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1756999610531</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL‎-00012" summary="update epoches variable in cnn creation">
+      <option name="closed" value="true" />
+      <created>1756999758775</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL‎-00012" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1756999758775</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -170,6 +178,7 @@
     <MESSAGE value="added function to predict the user image" />
     <MESSAGE value="updating the main section to be up to date with recent functions additions" />
     <MESSAGE value="updating the code to do a comparison between model a - basic and model b - enhanced" />
-    <option name="LAST_COMMIT_MESSAGE" value="updating the code to do a comparison between model a - basic and model b - enhanced" />
+    <MESSAGE value="update epoches variable in cnn creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="update epoches variable in cnn creation" />
   </component>
 </project>

@@ -68,12 +68,15 @@ def load_and_preprocess_cifar10():
 def create_cnn_model(model_config):
     model = keras.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+        layers.BatchNormalization(),
         layers.MaxPooling2D((2, 2)),
 
         layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.BatchNormalization(),
         layers.MaxPooling2D((2, 2)),
 
         layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.BatchNormalization(),
 
         layers.Flatten(),
         layers.Dense(model_config['dense_units'], activation='relu'),
